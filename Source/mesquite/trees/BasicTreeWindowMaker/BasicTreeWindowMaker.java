@@ -1517,7 +1517,7 @@ class BasicTreeWindow extends MesquiteWindow implements Fittable, MesquiteListen
 						if (treeDisplay.getOrientation()== TreeDisplay.UP || treeDisplay.getOrientation()== TreeDisplay.DOWN) 
 							canFit = numTaxa*12<w;
 						else if (treeDisplay.getOrientation()== TreeDisplay.RIGHT || treeDisplay.getOrientation()== TreeDisplay.LEFT) 
-							canFit =  numTaxa*12<w;
+							canFit =  numTaxa*12<h;
 						else
 							canFit = numTaxa*6<(w+h)/2;
 					}
