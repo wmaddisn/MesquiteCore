@@ -13,6 +13,7 @@ GNU Lesser General Public License.  (http://www.gnu.org/copyleft/lesser.html)
 package mesquite.lib.duties;
 
 import java.awt.*;
+
 import mesquite.lib.*;
 
 
@@ -53,6 +54,16 @@ public abstract class DrawTree extends MesquiteModule  {
    	public boolean isSubstantive(){
    		return false;  
    	}
+   	
+   	public void sizeParametersChanged(){
+   	}
+   	
+	public void employeeParametersChanged(MesquiteModule employee, MesquiteModule source, Notification notification) {
+		if (notification !=null && notification.getCode()==MesquiteListener.TREE_DRAWING_SIZE_PARAMETER_CHANGED)
+			sizeParametersChanged();
+		super.employeeParametersChanged(this,source,notification);
+	}
+
 }
 
 

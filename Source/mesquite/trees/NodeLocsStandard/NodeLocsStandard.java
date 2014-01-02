@@ -180,7 +180,8 @@ public class NodeLocsStandard extends NodeLocsVH {
 				}
 				*/
 
-				if (!MesquiteThread.isScripting()) parametersChanged();
+				if (!MesquiteThread.isScripting()) 
+					parametersChanged(new Notification(MesquiteListener.TREE_DRAWING_SIZE_PARAMETER_CHANGED));
 			}
 
 		}
@@ -248,7 +249,7 @@ public class NodeLocsStandard extends NodeLocsVH {
 					offFixedScalingMenuItem = addMenuItem( "Off Fixed Scaling", makeCommand("offFixedScaling", this));
 					resetContainingMenuBar();
 				}
-				parametersChanged();
+				parametersChanged(new Notification(MesquiteListener.TREE_DRAWING_SIZE_PARAMETER_CHANGED));
 			}
 		}
 		else if (checker.compare(this.getClass(), "Sets whether or not to draw the scale for branch lengths", "[on or off]", commandName, "toggleScale")) {

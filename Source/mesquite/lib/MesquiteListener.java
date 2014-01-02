@@ -79,7 +79,9 @@ public interface MesquiteListener {
 	public final static int ALL_CELLS_ONLY_SHIFTED = 905; 
 	public final static int TAXA_CHANGED = 906;
 
-	
+	/** parameters involved in sizing a tree on the screen have changed*/
+	public final static int TREE_DRAWING_SIZE_PARAMETER_CHANGED = 800; 
+
 	
 
 	/** A command was cancelled (used by CommandRecord)*/
