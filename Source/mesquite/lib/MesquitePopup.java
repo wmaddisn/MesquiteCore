@@ -16,8 +16,10 @@ package mesquite.lib;
 import java.awt.*;
 import java.awt.event.*;
 import mesquite.lib.duties.*;
+import javax.swing.*;
 
-public class MesquitePopup extends PopupMenu {
+
+public class MesquitePopup extends JPopupMenu {
 	Container c;
 	int id = 0;
 	MesquiteMenuSpec spec;
@@ -41,8 +43,11 @@ public class MesquitePopup extends PopupMenu {
 
 		return new MesquitePopup(spec, c);
 	}
-	Container getComponent(){
+	Container getPopupComponent(){
 		return c;
+	}
+	public int getItemCount(){
+		return getSubElements().length;// return the number of menu items in the popup menu
 	}
 	public void setComponent(Container c){
 		this.c = c;
@@ -62,6 +67,9 @@ public class MesquitePopup extends PopupMenu {
 		dropDownTriangle.addPoint(0, 0);
 		dropDownTriangle.npoints=4;
 		return dropDownTriangle;
+	}
+	public JMenuItem getItem(int i){
+		return (JMenuItem)getComponent(i);
 	}
 	public void addItem(String label, MesquiteModule module, MesquiteCommand respondCommand, String argument){
 		MesquiteMenuItem m = new MesquiteMenuItem(label, module, respondCommand, argument);

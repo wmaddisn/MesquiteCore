@@ -15,6 +15,9 @@ package mesquite.lib;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.*;
+
 import mesquite.lib.duties.*;
 import mesquite.lib.simplicity.InterfaceManager;
 
@@ -22,7 +25,7 @@ import mesquite.lib.simplicity.InterfaceManager;
 /* ======================================================================== */
 /** A class for checkboxmenuitems.*/
 
-public class MesquiteCheckMenuItem extends CheckboxMenuItem implements Commandable, ActionListener, ItemListener{
+public class MesquiteCheckMenuItem extends JCheckBoxMenuItem implements Commandable, ActionListener, ItemListener{
 	public MesquiteCommand command; //, resetCommand;
 	private MesquiteModule ownerModule;
 	public String itemName, itemID;
@@ -58,7 +61,8 @@ public class MesquiteCheckMenuItem extends CheckboxMenuItem implements Commandab
 			this.setLabel(specification.itemName);
 		this.specification = specification;
 		if (specification.shortcut!=null)
-			setShortcut(new MenuShortcut(specification.shortcut.getValue(), specification.shortcutNeedsShift));
+			MesquiteMenuItem.setShortcut(this,specification.shortcut.getValue(), specification.shortcutNeedsShift);
+
 		this.itemName = specification.itemName;
 		this.itemID = specification.referentID;
 		this.argument = specification.argument;

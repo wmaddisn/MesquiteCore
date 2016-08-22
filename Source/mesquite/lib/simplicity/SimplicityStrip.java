@@ -18,7 +18,7 @@ package mesquite.lib.simplicity;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-/* ======================================================================== */
+import javax.swing.*;
 
 import mesquite.lib.*;
 
@@ -71,8 +71,8 @@ public class SimplicityStrip extends MousePanel implements Commandable {
 		simpleItem.set(InterfaceManager.isSimpleMode() && !InterfaceManager.isEditingMode());
 		popup.add(simpleItem);
 		}
-		popup.add(new MenuItem("-"));
-		Menu lsm = new Menu("Load Simplification");
+		popup.add(new JMenuItem("-"));
+		JMenu lsm = new JMenu("Load Simplification");
 		popup.add(lsm);
 		InterfaceManager.addSettingsMenuItems(lsm, "load", true);
 		MesquiteMenuItem gs;

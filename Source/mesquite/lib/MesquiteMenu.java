@@ -15,13 +15,16 @@ package mesquite.lib;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.*;
+
 import mesquite.lib.duties.*;
 import mesquite.lib.simplicity.InterfaceManager;
 
 
 /* ======================================================================== */
 /** A menu.*/
-public class MesquiteMenu extends Menu implements Commandable, Listable{
+public class MesquiteMenu extends JMenu implements Commandable, Listable{
 	public static int totalSubmenus = 0;
 	public boolean recycle = false;
 	MesquiteMenuSpec spec;
@@ -126,7 +129,7 @@ public class MesquiteMenu extends Menu implements Commandable, Listable{
 		for (int j = 0; j<this.getItemCount(); j++) {
 			if (!("-".equals(this.getItem(j).getLabel()))){
 				output += ("      " + (j+1) + "  --  " + this.getItem(j).getLabel());
-				if(this.getItem(j) instanceof Menu)
+				if(this.getItem(j) instanceof JMenu)
 					output += " >";
 				output += "\n";
 			}
@@ -146,7 +149,7 @@ public class MesquiteMenu extends Menu implements Commandable, Listable{
 			if (MesquiteInteger.isCombinable(im)){
 				im--;
 				if (im >=0 && im<getItemCount()){
-					MenuItem item = getItem(im);
+					JMenuItem item = getItem(im);
 					if (item instanceof MesquiteMenu){
 						System.out.println(((MesquiteMenu)item).getName() + " selected");
 						((MesquiteMenu)item).listItems();
@@ -183,10 +186,10 @@ public class MesquiteMenu extends Menu implements Commandable, Listable{
 		return false;
 	}
 
-	public MenuItem add(MenuItem mmi) {
+	public JMenuItem add(JMenuItem mmi) {
 		if (mmi==null)
 			return null;
-		if (mmi instanceof Menu)
+		if (mmi instanceof JMenu)
 			totalSubmenus++;
 		if (!isFilterable()) {
 			if (mmi instanceof MesquiteMenuItem){

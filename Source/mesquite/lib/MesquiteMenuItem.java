@@ -16,6 +16,8 @@ package mesquite.lib;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.*;
+
 import mesquite.lib.duties.*;
 import mesquite.lib.simplicity.InterfaceManager;
 
@@ -24,7 +26,7 @@ import mesquite.lib.simplicity.InterfaceManager;
 /**A menu item.  Note that a command must be associated with each menu item.
 Each menu item belongs to a MesquiteModule.*/
 
-public class MesquiteMenuItem extends MenuItem implements ActionListener{
+public class MesquiteMenuItem extends JMenuItem implements ActionListener{
 	public static long totalCreated = 0;//to catch memory leaks
 	public static long totalDisposed =0;//to catch memory leaks
 	public static long totalFinalized =0;//to catch memory leaks
@@ -90,7 +92,7 @@ public class MesquiteMenuItem extends MenuItem implements ActionListener{
 		else
 			this.setLabel(specification.itemName);
 		if (specification.shortcut!=null)
-			setShortcut(new MenuShortcut(specification.shortcut.getValue(), specification.shortcutNeedsShift));
+			setShortcut(this,specification.shortcut.getValue(), specification.shortcutNeedsShift);
 		if (!specification.isEnabled())
 			setEnabled(false);
 		this.itemName = specification.itemName;
@@ -112,6 +114,20 @@ public class MesquiteMenuItem extends MenuItem implements ActionListener{
 	}
 	public void setHideable(boolean h ){
 		hideable = h;
+	}
+	public static void setShortcut(JMenuItem menuItem, int key, boolean useShiftModifier) {
+		int modifiers = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
+		if (useShiftModifier)
+			modifiers+=Event.SHIFT_MASK;
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(key, modifiers));
+	}
+	public static void setShortcut(JMenuItem menuItem, int key) {
+		int modifiers = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(key, modifiers));
+	}
+	public void setShortcut(int key) {
+		int modifiers = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
+		setAccelerator(KeyStroke.getKeyStroke(key, modifiers));
 	}
 	public void resetLabel(){
 		if (InterfaceManager.isEditingMode()){

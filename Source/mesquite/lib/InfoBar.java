@@ -665,7 +665,7 @@ public class InfoBar extends MousePanel implements Commandable {
 										showX = menuBase;
 									else
 										showX = menuOffsets[i-1];
-									if (menu.getComponent() == null)
+									if (menu.getPopupComponent() == null)
 										menu.setComponent(this);
 									menu.showPopup(showX, 24);
 								}

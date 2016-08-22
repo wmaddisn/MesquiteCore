@@ -19,6 +19,8 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.util.*;
 
+import javax.swing.*;
+
 import mesquite.lib.duties.*;
 import mesquite.lib.simplicity.InterfaceManager;
 import mesquite.lib.simplicity.SimplicityStrip;
@@ -98,7 +100,7 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 	public static int numNonWizardDialogs=0;
 	static int numWindowsTotal = 0;
 	int id = 0;
-	static MenuShortcut closeWindowShortcut;
+	static int closeWindowShortcut = KeyEvent.VK_W;
 	public static ClassVector componentsPainted; //for detecting efficiency problems
 	MesquiteFrame parentFrame;
 	public static boolean compactWindows = true;
@@ -117,7 +119,6 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 
 		dialogAnchor = new Frame();
 		dialogAnchor.setBounds(-64, -64, 32,32);
-		closeWindowShortcut = new MenuShortcut(KeyEvent.VK_W);
 		defaultFont = new Font ("SanSerif", Font.PLAIN, 10); //added 5 Nov 01
 			if (MesquiteTrunk.checkMemory){
 				classesCreated = new Vector();
@@ -159,10 +160,10 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 			parentFrame = new MesquiteFrame(isCompactible(), ColorTheme.getInterfaceBackground());
 			parentFrame.setOwnerModule(ownerModule);
 			/*following done for OS 9 because of crashing bug in MRJ 2.2.5 if application menu touched; also may help other OS's to establish insets early?? */
-			Menu fM = new MesquiteMenu("File");
-			MenuBar mBar = new MenuBar();
+			JMenu fM = new MesquiteMenu("File");
+			JMenuBar mBar = new JMenuBar();
 			mBar.add(fM);
-			parentFrame.setMenuBar(mBar);
+			parentFrame.setMenuBar(this, mBar);
 		}
 
 
@@ -520,8 +521,8 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 			MesquiteWindow w = null;
 			if (widget instanceof Component)
 				w = windowOfItem((Component)widget);
-			else if (widget instanceof MenuComponent)
-				w = windowOfItem((MenuComponent)widget);
+			else if (widget instanceof JComponent)
+				w = windowOfItem((JComponent)widget);
 			if (w==null)
 				return;
 			MesquiteTrunk.mesquiteTrunk.showLogWindow(false);
@@ -553,7 +554,7 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 	NOTE: this system was built in 2000 when the info bar had a ? button to turn on query mode.  Now (Jan 2001) that that's gone, and now that there is
 	an explanation area at the bottom of windows, an alternative systems were developed for explaining items on the fly (including control-select for menu items).
 	These query mode methods are left here in case it makes sense to resurrect them*/
-	public static boolean getQueryMode(MenuComponent c){
+	public static boolean getQueryMode(JComponent c){
 		MesquiteWindow win = windowOfItem(c);
 		if (win!=null)
 			return win.queryMode;
@@ -566,25 +567,25 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 	}
 	/*.................................................................................................................*/
 	/** Returns the MesquiteWindow containing the menu item*/
-	public static MesquiteWindow windowOfItem(MenuComponent c){
+	public static MesquiteWindow windowOfItem(JComponent c){
 		if (c==null)
 			return null;
-		if (c instanceof MenuBar)
-			return getWindow((MenuBar)c);
-		if (!(c instanceof MenuComponent))
+		if (c instanceof JMenuBar)
+			return getWindow((JMenuBar)c);
+		if (!((c instanceof JPopupMenu)||(c instanceof JMenuItem)))
 			return null;
-		MenuContainer cont = ((MenuComponent)c).getParent();
+		MenuContainer cont = ((JComponent)c).getParent();
 		while (cont!= null && !(cont instanceof MenuBar) && !(cont instanceof MesquitePopup)&& cont instanceof MenuComponent)
 			cont =  ((MenuComponent)cont).getParent();
 		if (cont instanceof MenuBar) {  //Debugg.println this may be broken under new minimal-refresh system
-			return getWindow((MenuBar)cont);
+			return getWindow((JMenuBar)cont);
 		}
 		else if (cont instanceof MesquitePopup){
-			return windowOfItem(((MesquitePopup)cont).getComponent());
+			return windowOfItem(((MesquitePopup)cont).getPopupComponent());
 		}
 		return null;
 	}
-	private static MesquiteWindow getWindow(MenuBar mb){
+	private static MesquiteWindow getWindow(JMenuBar mb){
 		if(mb==null)
 			return null;
 
@@ -2094,7 +2095,7 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 			graphics[0].requestFocusInWindow();
 	}
 	/*--------------------------------MENU BARS ----------------------------------*/
-	private final void deassign(Menu m, MenuItem mi){
+	private final void deassign(JMenu m, JMenuItem mi){
 		if (mi ==null)
 			return;
 		if (mi instanceof MesquiteMenuItem)
@@ -2116,7 +2117,7 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 		if (menuBar!=null) {
 			try {
 				for (int i=0; i<menuBar.getMenuCount(); i++){  
-					Menu m = menuBar.getMenu(i);
+					JMenu m = menuBar.getMenu(i);
 					for (int j = 0; j< m.getItemCount(); j++) {
 						deassign(m, m.getItem(j));
 					}
@@ -2170,14 +2171,14 @@ public abstract class MesquiteWindow implements Listable, Commandable, OwnedByMo
 			System.out.println(Integer.toString(menuResets) + " menu resets for " + getTitle());
 		resetMenuTime.end();
 	}
-	public void setMenuBar(MenuBar mbar) {
+	public void setMenuBar(JMenuBar mbar) {
 		if (parentFrame!=null)
 			parentFrame.setMenuBar(this, menuBar);  //this actually calls the setMenuBar only if this window is at front
 	}
-	public MenuBar getMenuBar() {
+	public JMenuBar getMenuBar() {
 		return menuBar;
 	}
-	public MenuBar getMenuBar(boolean generateIfNeeded) { //DAVIDCHECK: new method; MenuBar object is build on demand at this point
+	public JMenuBar getMenuBar(boolean generateIfNeeded) { //DAVIDCHECK: new method; MenuBar object is build on demand at this point
 		if (generateIfNeeded && menuBar == null) {
 			resetMenus(true);
 		}

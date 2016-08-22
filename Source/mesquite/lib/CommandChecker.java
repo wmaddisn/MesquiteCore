@@ -15,6 +15,9 @@ package mesquite.lib;
 
 import java.awt.*;
 import java.util.*;
+
+import javax.swing.*;
+
 import java.io.*;
 import mesquite.lib.duties.*;
 
@@ -838,13 +841,13 @@ public class CommandChecker {
 	 * parental component (typically graphics[0] of the window) and the menu bar
 	 * of the window
 	 */
-	public static void showExplanations(Component c, MenuBar mBar, String name) {
+	public static void showExplanations(Component c, JMenuBar mBar, String name) {
 		prepareExplanations(c, mBar, name);
 		MesquiteModule.showWebPage(MesquiteModule.prefsDirectory
 				+ MesquiteFile.fileSeparator + "tempExplanations.html", true);
 	}
 
-	private static boolean prepareExplanations(Component c, MenuBar mBar,
+	private static boolean prepareExplanations(Component c, JMenuBar mBar,
 			String name) {
 		String content = null;
 		CommandChecker checker = new CommandChecker();
@@ -898,7 +901,7 @@ public class CommandChecker {
 						+ "images/small.top.arrow.gif")
 						+ "\"</a> <a name=\"menus\"></a>Menus</h2>";//
 			for (int i = 0; i < mBar.getMenuCount(); i++) {
-				Menu menu = mBar.getMenu(i);
+				JMenu menu = mBar.getMenu(i);
 				content += "<hr><h4>" + menu.getLabel() + "</h4>"
 				+ StringUtil.lineEnding()
 				+ getItemExplanation(mBar.getMenu(i), checker, false, false);
@@ -957,8 +960,7 @@ public class CommandChecker {
 		return ex;
 	}
 
-	public static String getItemExplanation(MenuItem item,
-			CommandChecker checker, boolean label, boolean suppressCommandName) {
+	public static String getItemExplanation(JMenuItem item,CommandChecker checker, boolean label, boolean suppressCommandName) {
 		if (item == null)
 			return null;
 		if (item instanceof MesquiteMenuItem
@@ -1018,8 +1020,8 @@ public class CommandChecker {
 				ex += "<li><b>" + item.getLabel() + "</b>";
 		}
 		ex += StringUtil.lineEnding();
-		if (item instanceof Menu) {
-			Menu menu = ((Menu) item);
+		if (item instanceof JMenu) {
+			JMenu menu = ((JMenu) item);
 			String iex = "";
 			for (int i = 0; i < menu.getItemCount(); i++) {
 				String ix = getItemExplanation(menu.getItem(i), checker, true, false);

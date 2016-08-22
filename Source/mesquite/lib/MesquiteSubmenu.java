@@ -15,6 +15,7 @@ package mesquite.lib;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 import mesquite.lib.duties.*;
 import mesquite.lib.simplicity.InterfaceManager;
@@ -25,13 +26,13 @@ import mesquite.lib.simplicity.InterfaceManager;
 public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 	public MesquiteCommand command;
 	private MesquiteModule ownerModule;
-	public Menu ownerMenu;
+	public JComponent ownerMenu;
 	MesquiteSubmenuSpec msms;
 	MesquiteString checkString = null;
 	public boolean disconnectable = true;
 	long ownerID;
 //	static MesquiteSubmenu[] submenus = new MesquiteSubmenu[255];
-	public MesquiteSubmenu(MesquiteSubmenuSpec msms, Menu ownerMenu, MesquiteModule ownerModule) {
+	public MesquiteSubmenu(MesquiteSubmenuSpec msms, JComponent ownerMenu, MesquiteModule ownerModule) {
 		super(msms.getSubmenuName());  
 		MesquiteMenuItem.totalCreated++;
 		filterable = msms.isFilterable();
@@ -47,7 +48,7 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 		this.command = msms.getCommand();
 	}
 
-	public MesquiteSubmenu(String submenuName, Menu ownerMenu, MesquiteModule ownerModule) {
+	public MesquiteSubmenu(String submenuName, JComponent ownerMenu, MesquiteModule ownerModule) {
 		super(submenuName);  
 		MesquiteMenuItem.totalCreated++;
 		addActionListener(this);
@@ -70,10 +71,13 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 	public MesquiteCommand getCommand(){
 		return command;
 	}
-	public static MesquiteSubmenu getSubmenu(MesquiteSubmenuSpec msms, Menu ownerMenu, MesquiteModule ownerModule) {
+	public static MesquiteSubmenu getSubmenu(MesquiteSubmenuSpec msms, JComponent ownerMenu, MesquiteModule ownerModule) {
 		return new MesquiteSubmenu(msms, ownerMenu, ownerModule);
 	}
-	public static MesquiteSubmenu getSubmenu(String submenuName, Menu ownerMenu, MesquiteModule ownerModule) {
+	public static MesquiteSubmenu getSubmenu(String submenuName, JComponent ownerMenu, MesquiteModule ownerModule) {
+		return new MesquiteSubmenu(submenuName, ownerMenu, ownerModule);
+	}
+	public static MesquiteSubmenu getSubmenu(String submenuName, MesquitePopup ownerMenu, MesquiteModule ownerModule) {
 		return new MesquiteSubmenu(submenuName, ownerMenu, ownerModule);
 	}
 
@@ -104,7 +108,7 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 	}
 	
 	
-	public static MesquiteSubmenu getFontSubmenu(String title, Menu ownerMenu, MesquiteModule ownerModule, MesquiteCommand setFontCommand) {
+	public static MesquiteSubmenu getFontSubmenu(String title, MesquitePopup ownerMenu, MesquiteModule ownerModule, MesquiteCommand setFontCommand) {
 		MesquiteSubmenu submenuFont=getSubmenu(title, ownerMenu, ownerModule);
 		//Debugg.println("getFontSubmenu");
 		submenuFont.setSelected(new MesquiteString(""));
@@ -118,7 +122,21 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 			submenuFont.add(new MesquiteCheckMenuItem(fonts[i],  null, setFontCommand, StringUtil.tokenize(fonts[i]), submenuFont.checkString));
 		return submenuFont;
 	}
-	public static MesquiteSubmenu getFontSizeSubmenu(String title, Menu ownerMenu, MesquiteModule ownerModule, MesquiteCommand setFontSizeCommand) {
+	public static MesquiteSubmenu getFontSubmenu(String title, JMenu ownerMenu, MesquiteModule ownerModule, MesquiteCommand setFontCommand) {
+		MesquiteSubmenu submenuFont=getSubmenu(title, ownerMenu, ownerModule);
+		//Debugg.println("getFontSubmenu");
+		submenuFont.setSelected(new MesquiteString(""));
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();  //Debugg.println
+		String[] fonts = ge.getAvailableFontFamilyNames();
+	//	Debugg.println("Fonts : " + fonts.length);
+	/*
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		String[] fonts = tk.getFontList(); */
+		for (int i=0; i<fonts.length; i++)
+			submenuFont.add(new MesquiteCheckMenuItem(fonts[i],  null, setFontCommand, StringUtil.tokenize(fonts[i]), submenuFont.checkString));
+		return submenuFont;
+	}
+	public static MesquiteSubmenu getFontSizeSubmenu(String title, JComponent ownerMenu, MesquiteModule ownerModule, MesquiteCommand setFontSizeCommand) {
 		MesquiteSubmenu submenuSize=MesquiteSubmenu.getSubmenu(title, ownerMenu, ownerModule);
 		submenuSize.setSelected(new MesquiteString(""));
 		submenuSize.add(new MesquiteCheckMenuItem("9",  ownerModule, setFontSizeCommand, "9", submenuSize.checkString));
@@ -134,7 +152,8 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 		return submenuSize;
 	}
 	public void checkName(String s){
-		checkString.setValue(s);
+		if (checkString!=null)
+			checkString.setValue(s);
 		resetCheck();
 	}
 	/** A method to resent which CheckBoxMenuItem is checked.  Currently not used because of bug in
@@ -144,17 +163,17 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 		if (checkString != null) {
 			int numItems = getItemCount();
 			for (int i = 0; i<numItems; i++) {
-				MenuItem mi = getItem(i);
-				if (mi instanceof CheckboxMenuItem && mi!=null) {
+				JMenuItem mi = getItem(i);
+				if (mi instanceof JCheckBoxMenuItem && mi!=null) {
 					if (mi.getLabel() != null && mi.getLabel().equals(checkString.getValue())) {
 						if (mi instanceof MesquiteCheckMenuItem)
 							((MesquiteCheckMenuItem)mi).resetCheck();
-						else ((CheckboxMenuItem)mi).setState(true);
+						else ((JCheckBoxMenuItem)mi).setState(true);
 					}
 					else {
 						if (mi instanceof MesquiteCheckMenuItem)
 							((MesquiteCheckMenuItem)mi).resetCheck();
-						else ((CheckboxMenuItem)mi).setState(false);
+						else ((JCheckBoxMenuItem)mi).setState(false);
 					}
 
 				}
@@ -224,7 +243,7 @@ public class MesquiteSubmenu extends MesquiteMenu implements ActionListener {
 		//Event queue
 		Object target = e.getSource();
 		if (command != null)  { // there is a submenu-wide command; use it and pass name as argument
-			MenuItem mi = ((MenuItem)target);
+			JMenuItem mi = ((JMenuItem)target);
 			if (hideable && InterfaceManager.isEditingMode()){
 				if (hiddenStatus == InterfaceManager.NORMAL){
 					InterfaceManager.addMenuItemToHidden(mi.getLabel(), StringUtil.tokenize(mi.getLabel()), command, dutyClass, true);

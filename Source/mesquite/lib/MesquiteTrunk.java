@@ -22,6 +22,8 @@ import mesquite.trunk.ProjectTreeWindow;
 
 import java.util.*;
 
+import javax.swing.*;
+
 
 
 /* ����������������������������������������������������������������� */
@@ -420,18 +422,18 @@ public abstract class MesquiteTrunk extends MesquiteModule
 			while (e.hasMoreElements()) {
 				Object obj = e.nextElement();
 				MesquiteWindow mw = (MesquiteWindow)obj;
-				MenuBar mbar = mw.getMenuBar();
+				JMenuBar mbar = mw.getMenuBar();
 				if (mbar!=null) {
 					int numMenus = mbar.getMenuCount();
 					for (int imenu = 0; imenu<numMenus; imenu++) {
-						Menu menu = mbar.getMenu(imenu);
+						JMenu menu = mbar.getMenu(imenu);
 						resetEnabling(menu);
 					}
 				}
 				Vector v = mw.getOwnerModule().embeddedMenusVector;
 				if (v != null){
 					for (int i = 0; i< v.size(); i++){
-						Menu menu = (Menu)v.elementAt(i);
+						JMenu menu = (JMenu)v.elementAt(i);
 
 						resetEnabling(menu);
 					}
@@ -443,16 +445,16 @@ public abstract class MesquiteTrunk extends MesquiteModule
 	}
 
 	/*.................................................................................................................*/
-	private static void resetEnabling(Menu menu) {
+	private static void resetEnabling(JMenu menu) {
 		int numItems = menu.getItemCount();
 		for (int i = 0; i<numItems; i++) {
-			MenuItem mi = menu.getItem(i);
+			JMenuItem mi = menu.getItem(i);
 			if (mi instanceof MesquiteSubmenu) {
 				((MesquiteSubmenu)mi).resetEnable();
-				resetEnabling((Menu)mi);
+				resetEnabling((JMenu)mi);
 			}
-			else if (mi instanceof Menu)
-				resetEnabling((Menu)mi);
+			else if (mi instanceof JMenu)
+				resetEnabling((JMenu)mi);
 			else if (mi instanceof MesquiteMenuItem) {
 				((MesquiteMenuItem)mi).resetEnable();
 			}
@@ -482,11 +484,11 @@ public abstract class MesquiteTrunk extends MesquiteModule
 			while (e.hasMoreElements()) {
 				Object obj = e.nextElement();
 				MesquiteWindow mw = (MesquiteWindow)obj;
-				MenuBar mbar = mw.getMenuBar();
+				JMenuBar mbar = mw.getMenuBar();
 				if (mbar!=null) {
 					int numMenus = mbar.getMenuCount();
 					for (int imenu = 0; imenu<numMenus; imenu++) {
-						Menu menu = mbar.getMenu(imenu);
+						JMenu menu = mbar.getMenu(imenu);
 						resetChecks(menu);
 					}
 				}
@@ -494,7 +496,7 @@ public abstract class MesquiteTrunk extends MesquiteModule
 					Vector v = mw.getOwnerModule().embeddedMenusVector;
 					if (v != null){
 						for (int i = 0; i< v.size(); i++){
-							Menu menu = (Menu)v.elementAt(i);
+							JMenu menu = (JMenu)v.elementAt(i);
 							resetChecks(menu);
 						}
 					}
@@ -514,32 +516,32 @@ public abstract class MesquiteTrunk extends MesquiteModule
 	}
 
 	/*.................................................................................................................*/
-	public static void resetChecks(Menu menu) {
+	public static void resetChecks(JMenu menu) {
 		int numItems = menu.getItemCount();
 		for (int i = 0; i<numItems; i++) {
-			MenuItem mi = menu.getItem(i);
+			JMenuItem mi = menu.getItem(i);
 			if (mi instanceof MesquiteSubmenu) {
 				((MesquiteSubmenu)mi).resetCheck();
-				resetChecks((Menu)mi);
+				resetChecks((JMenu)mi);
 			}
-			else if (mi instanceof Menu)
-				resetChecks((Menu)mi);
+			else if (mi instanceof JMenu)
+				resetChecks((JMenu)mi);
 			else if (mi instanceof MesquiteCheckMenuItem) {
 				((MesquiteCheckMenuItem)mi).resetCheck();
 			}
 		}
 	}
 	/*.................................................................................................................*/
-	private static void resetChecks(Menu menu, MesquiteMenuSpec menuSpec) {
+	private static void resetChecks(JMenu menu, MesquiteMenuSpec menuSpec) {
 		int numItems = menu.getItemCount();
 		for (int i = 0; i<numItems; i++) {
-			MenuItem mi = menu.getItem(i);
+			JMenuItem mi = menu.getItem(i);
 			if (mi instanceof MesquiteSubmenu && menuSpec == ((MesquiteSubmenu)mi).getSpecification()) {
 				((MesquiteSubmenu)mi).resetCheck();
-				resetChecks((Menu)mi);
+				resetChecks((JMenu)mi);
 			}
-			else if (mi instanceof Menu)
-				resetChecks((Menu)mi, menuSpec);
+			else if (mi instanceof JMenu)
+				resetChecks((JMenu)mi, menuSpec);
 			else if (mi instanceof MesquiteCheckMenuItem && menu instanceof MesquiteSubmenu && menuSpec == ((MesquiteSubmenu)menu).getSpecification()) {
 				((MesquiteCheckMenuItem)mi).resetCheck();
 			}
@@ -551,11 +553,11 @@ public abstract class MesquiteTrunk extends MesquiteModule
 		while (e.hasMoreElements()) {
 			Object obj = e.nextElement();
 			MesquiteWindow mw = (MesquiteWindow)obj;
-			MenuBar mbar = mw.getMenuBar();
+			JMenuBar mbar = mw.getMenuBar();
 			if (mbar!=null) {
 				int numMenus = mbar.getMenuCount();
 				for (int imenu = 0; imenu<numMenus; imenu++) {
-					Menu menu = mbar.getMenu(imenu);
+					JMenu menu = mbar.getMenu(imenu);
 					resetChecks(menu, menuSpec);
 				}
 			}

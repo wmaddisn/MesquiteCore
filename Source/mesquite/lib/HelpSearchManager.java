@@ -15,6 +15,9 @@ package mesquite.lib;
 
 
 import java.util.Vector;
+
+import javax.swing.*;
+
 import java.awt.*;
 
 
@@ -117,10 +120,10 @@ public class HelpSearchManager implements Commandable {
 		if (item instanceof MesquiteWindow){
 			String result = "";
 			MesquiteWindow f = ((MesquiteWindow)item);
-			MenuBar bar = f.getMenuBar();
+			JMenuBar bar = f.getMenuBar();
 			if (bar != null){
 				for (int i = 0; i<bar.getMenuCount(); i++){
-					Menu m = bar.getMenu(i);
+					JMenu m = bar.getMenu(i);
 					String rm = whereInMenus(s, m, f.getTitle());
 					if (!StringUtil.blank(rm))
 						result += rm;
@@ -146,7 +149,7 @@ public class HelpSearchManager implements Commandable {
 			String label = ((MenuItem)item).getLabel();
 			if (!stringsFound(label, s))
 				return "";
-			return "<li>" + StringUtil.protectForXML(soFar + ">" + label) + CommandChecker.getItemExplanation((MenuItem)item,
+			return "<li>" + StringUtil.protectForXML(soFar + ">" + label) + CommandChecker.getItemExplanation((JMenuItem)item,
 					CommandChecker.defaultSkipChecker, false, true) + "</li>";
 		}
 		return "";

@@ -16,6 +16,8 @@ package mesquite.lib;
 import java.awt.*;
 import java.util.*;
 
+import javax.swing.JMenuItem;
+
 import mesquite.lib.characters.CharacterData;
 import mesquite.lib.duties.*;
 /* ======================================================================== */
@@ -626,7 +628,7 @@ public class TreeVector extends ListableVector implements Trees, Commandable, Id
 		if (manager!=null && manager instanceof MesquiteModule) {
 			MesquiteFile file = getFile();
 			if (file!=null && file.getProject()!=null) {
-				popup.add(new MenuItem("-"));
+				popup.add(new JMenuItem("-"));
 				popup.add(new MesquiteMenuItem("Show list of trees \"" + getName() + "\"", MesquiteTrunk.mesquiteTrunk, MesquiteTrunk.mesquiteTrunk.makeCommand("showMe", this)));
 				if (getFile()!=null)
 					popup.add(new MesquiteMenuItem("Show trees \"" + getName() + "\" in tree window", MesquiteTrunk.mesquiteTrunk, MesquiteTrunk.mesquiteTrunk.makeCommand("showTreesInWindow" , (MesquiteModule)manager),Integer.toString(getFile().getProject().getFileElementNumber(this, TreeVector.class))));

@@ -27,7 +27,7 @@ import mesquite.lib.simplicity.InterfaceManager;
 /* ======================================================================== */
 /** an intermediary class that can be changed to extend Panel versus Frame, to allow embedding versus not 
 UNEMBEDDED VERSION */
-public class MesquiteFrame extends Frame implements Commandable {
+public class MesquiteFrame extends JFrame implements Commandable {
 
 	Vector windows;
 	Vector orderedWindows;
@@ -164,10 +164,10 @@ public class MesquiteFrame extends Frame implements Commandable {
 		project = null;
 		windows = null;
 	}
-	public void setMenuBar(MesquiteWindow which, MenuBar mbar) {
+	public void setMenuBar(MesquiteWindow which, JMenuBar mbar) {
 		if (which == frontWindow) {
 			try {
-				super.setMenuBar(mbar);
+				super.setJMenuBar(mbar);
 				which.repaintInfoBar();
 			}
 			catch(Exception e){
@@ -532,10 +532,10 @@ public class MesquiteFrame extends Frame implements Commandable {
 			w.poppedOut = true;
 			MesquiteFrame parentFrame = new MesquiteFrame(false, backgroundColor);
 			parentFrame.setOwnerModule(ownerModule);
-			Menu fM = new MesquiteMenu("File");
-			MenuBar mBar = new MenuBar();
+			JMenu fM = new MesquiteMenu("File");
+			JMenuBar mBar = new JMenuBar();
 			mBar.add(fM);
-			parentFrame.setMenuBar(mBar);
+			parentFrame.setJMenuBar(mBar);
 			parentFrame.setLocation(getLocation().x + 50, getLocation().y + 50);
 			/*			Dimension s = getSize();
 			s.height -= tabHeight;

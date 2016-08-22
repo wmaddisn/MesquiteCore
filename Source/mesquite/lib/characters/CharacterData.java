@@ -20,6 +20,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.*;
 import java.util.zip.*;
 
+import javax.swing.JMenuItem;
 import javax.swing.text.JTextComponent;
 
 import mesquite.categ.lib.CategoricalState;
@@ -3639,7 +3640,7 @@ public abstract class CharacterData extends FileElement implements MesquiteListe
 		if (manager!=null && manager instanceof MesquiteModule) {
 			MesquiteFile file = getFile();
 			if (file!=null && file.getProject()!=null) {
-				popup.add(new MenuItem("-"));
+				popup.add(new JMenuItem("-"));
 				popup.add(new MesquiteMenuItem("Show List of Characters of \"" + getName() + "\"", MesquiteTrunk.mesquiteTrunk, MesquiteTrunk.mesquiteTrunk.makeCommand("showCharacters", (MesquiteModule)manager), getFile().getProject().getCharMatrixReferenceInternal(this)));
 				popup.add(new MesquiteMenuItem("Show Matrix Editor for \"" + getName() + "\"", MesquiteTrunk.mesquiteTrunk, MesquiteTrunk.mesquiteTrunk.makeCommand("showDataWindow", (MesquiteModule)manager), getFile().getProject().getCharMatrixReferenceInternal(this)));
 			}

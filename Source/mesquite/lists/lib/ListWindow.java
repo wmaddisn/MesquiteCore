@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
+import javax.swing.JMenuItem;
+
 import mesquite.lib.duties.*;
 import mesquite.lib.*;
 import mesquite.lib.characters.*;
@@ -352,7 +354,7 @@ public abstract class ListWindow extends TableWindow implements KeyListener, Mes
 				MesquiteCheckMenuItem lessThanItem = new MesquiteCheckMenuItem("Less than", ownerModule, MesquiteModule.makeCommand("toggleLT", this), null, null);
 				lessThanItem.set(lessThan.getValue());
 				popup.add(lessThanItem);
-				popup.add(new MenuItem("-"));
+				popup.add(new JMenuItem("-"));
 				MesquiteCheckMenuItem withinSelectionItem = new MesquiteCheckMenuItem("Within Existing Selection", ownerModule, MesquiteModule.makeCommand("toggleWithinSelection", this), null, null);
 				withinSelectionItem.set(withinExistingSelection.getValue());
 				popup.add(withinSelectionItem);

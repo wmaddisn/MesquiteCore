@@ -17,9 +17,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 
+import javax.swing.*;
+
 /* ======================================================================== */
 /** A menu bar attached to a window.*/
-public class MesquiteMenuBar extends MenuBar {
+public class MesquiteMenuBar extends JMenuBar {
 	MesquiteWindow ownerWindow;
 	public static long totalCreated = 0;
 	public static long totalFinalized = 0;
@@ -38,7 +40,7 @@ public class MesquiteMenuBar extends MenuBar {
 				return true;
 		return false;
 	}
-	public Menu add(Menu menu) {
+	public JMenu add(JMenu menu) {
 		if (menu==null)
 			return null;
 		while (menuWithSameLabelExists(menu.getLabel()))
@@ -50,16 +52,16 @@ public class MesquiteMenuBar extends MenuBar {
 		MesquiteMenuBar.totalFinalized++;
 		super.finalize();
 	}
-	private void removeItems(Menu menu){
+	private void removeItems(JMenu menu){
 			for (int j=0; j<menu.getItemCount(); j++) {
-				MenuItem item = menu.getItem(j);
-				if (item instanceof Menu)
-					removeItems((Menu)item);
+				JMenuItem item = menu.getItem(j);
+				if (item instanceof JMenu)
+					removeItems((JMenu)item);
 				if (item instanceof ActionListener){
-					((MenuItem)item).removeActionListener((ActionListener)item);
+					((JMenuItem)item).removeActionListener((ActionListener)item);
 				}
-				if (item instanceof CheckboxMenuItem){
-					((CheckboxMenuItem)item).removeItemListener((ItemListener)item);
+				if (item instanceof JCheckBoxMenuItem){
+					((JCheckBoxMenuItem)item).removeItemListener((ItemListener)item);
 				}
 			}
 			menu.removeAll();
@@ -68,11 +70,11 @@ public class MesquiteMenuBar extends MenuBar {
 	//	Debugg.println("@@@@@@@@@@@@@ disconnect menu bar");
 		ownerWindow = null;
 		for (int i=0; i<getMenuCount(); i++){
-			Menu menu = getMenu(i);
+			JMenu menu = getMenu(i);
 			removeItems(menu);
 		}
 		for (int i=getMenuCount()-1; i>=0; i--){
-			Menu menu = getMenu(i);
+			JMenu menu = getMenu(i);
 			remove(menu);
 		}
 		

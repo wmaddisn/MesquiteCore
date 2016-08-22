@@ -16,6 +16,9 @@ package mesquite.lib;
 
 import java.awt.*;
 import java.util.*;
+
+import javax.swing.*;
+
 import java.awt.event.*;
 import java.io.*;
 import mesquite.lib.duties.*;
@@ -314,10 +317,10 @@ public class CommandCommunicator {
 			}
 		}
 		else if ("menus".equalsIgnoreCase(command)) {
-			MenuBar menus = getMenuBar(objectCommanded);
+			JMenuBar menus = getMenuBar(objectCommanded);
 			if (menus !=null){
 				for (int i= 0; i<menus.getMenuCount(); i++){
-					Menu menu = menus.getMenu(i);
+					JMenu menu = menus.getMenu(i);
 					output += ("  " + (i+1) + "  --  " + menu.getLabel() +"\n");
 				}
 				output += "\nEnter  \"menu i\" to select the i'th menu\n";
@@ -325,7 +328,7 @@ public class CommandCommunicator {
 
 		}
 		else if ("menu".equalsIgnoreCase(command)) {
-			MenuBar menus = getMenuBar(objectCommanded);
+			JMenuBar menus = getMenuBar(objectCommanded);
 			if (menus !=null){
 				MesquiteInteger poss = new MesquiteInteger();
 				int i = MesquiteInteger.fromFirstToken(arguments, poss);
@@ -553,7 +556,7 @@ public class CommandCommunicator {
 			resultBuffer.append(s);
 		resultBuffer.append('\n');
 	}
-	private MenuBar getMenuBar(Object objectCommanded){
+	private JMenuBar getMenuBar(Object objectCommanded){
 		MesquiteWindow w= null;
 		if (objectCommanded instanceof MesquiteWindow)
 			w = (MesquiteWindow)objectCommanded;
@@ -572,7 +575,7 @@ public class CommandCommunicator {
 		}
 		if (w == null)
 			return null;
-		MenuBar menus = w.getMenuBar();
+		JMenuBar menus = w.getMenuBar();
 		return menus;
 	}
 	public void commandDone(Object returned){

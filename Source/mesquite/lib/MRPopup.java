@@ -15,20 +15,28 @@ package mesquite.lib;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.JMenuItem;
+
 import mesquite.lib.duties.*;
 
 public class MRPopup extends MesquitePopup implements ActionListener {
 	public MRPopup(Container c){
 		super(c);
-		addActionListener(this);
 	}
+    public JMenuItem add(JMenuItem menuItem) {
+		menuItem.addActionListener(this);
+        super.add(menuItem);
+        return menuItem;
+    }
+
 	public void actionPerformed(ActionEvent e) {
 		//Event queue
 		/*return super.postEvent(evt);*/
-		if (e.getSource() instanceof MenuItem) {   
-			MenuContainer gp = getParent();
-			if (gp !=null)
-				gp.remove(this);
+		if (e.getSource() instanceof JMenuItem) {   
+			JMenuItem menuItem = (JMenuItem)e.getSource();
+			if (menuItem!=null)
+				menuItem.remove(this);
 		}
 		/**/
 	}

@@ -17,6 +17,8 @@ import mesquite.lib.*;
 import java.awt.*;
 import java.util.*;
 
+import javax.swing.*;
+
 public class InterfaceManager {
 
 	/*vvvvvvvvvvvvvvvvvvvvv*/
@@ -353,7 +355,7 @@ public class InterfaceManager {
 		return NORMAL;
 	}
 	/*---------------------------*/
-	public static boolean isFilterable(Menu menu){
+	public static boolean isFilterable(JComponent menu){
 		if (menu instanceof MesquiteMenu){
 			return (((MesquiteMenu)menu).isFilterable());
 
@@ -397,7 +399,16 @@ public class InterfaceManager {
 			}
 		}
 	}*/
-	public static void addSettingsMenuItems(java.awt.Menu menu, String command, boolean includeDefaults){
+	public static void addSettingsMenuItems(javax.swing.JMenu menu, String command, boolean includeDefaults){
+		if (simplicityModule != null){
+			for (int i = 0; i< settingsFiles.size(); i++){
+				StringArray sf = (StringArray)settingsFiles.elementAt(i);
+				if (includeDefaults || sf.getValue(2) == null || !sf.getValue(2).equalsIgnoreCase("default"))
+					menu.add(new MesquiteMenuItem(sf.getName(), null, new MesquiteCommand(command, "" + i, simplicityModule), null));
+			}
+		}
+	}
+	public static void addSettingsMenuItems(MesquitePopup menu, String command, boolean includeDefaults){
 		if (simplicityModule != null){
 			for (int i = 0; i< settingsFiles.size(); i++){
 				StringArray sf = (StringArray)settingsFiles.elementAt(i);
