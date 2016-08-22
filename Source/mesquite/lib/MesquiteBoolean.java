@@ -124,6 +124,7 @@ public class MesquiteBoolean implements Listable {
 	public void toggleValue() {
 		unassigned = false;
 		value=!value;
+		Debugg.println("Toggle " + getName()+": " + value);
 		if (cmis!=null) {
 			MesquiteTrunk.resetCheckMenuItems();
 		}

@@ -460,7 +460,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 	/*.................................................................................................................*/
 	/* ����� */
 	/** Adds a dividing line to the module's containing menu. */
-	public final MesquiteMenuItemSpec addMenuLine(){
+	public final MesquiteMenuItemSpec addMenuSeparator(){
 		return addMenuItem("-",null);
 	}
 	/*.................................................................................................................*/
@@ -1011,9 +1011,15 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 			}
 
 	}
+	private void addSeparator(JComponent menu) {
+		if (menu instanceof JMenu)
+			((JMenu)menu).addSeparator();
+		else if (menu instanceof JPopupMenu)
+			((JPopupMenu)menu).addSeparator();
+	}
 	private void addMacrosMenus(JComponent menu, MesquiteModule useModule){
 		if (useModule.getAutoSaveMacros()) {
-			menu.add(new JMenuItem("-"));
+			addSeparator(menu);
 			menu.add(new MesquiteMenuItem("Save Macro for " +  useModule.getNameForMenuItem() + "...", useModule, useModule.makeCommand("saveMacro", useModule)));  //commandArgument
 		}
 		if (!(useModule instanceof FileCoordinator)) {
@@ -1061,7 +1067,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 				wMenu.add(whichWindow.cloneWindowMenuItem);
 			}
 			//experimental
-			wMenu.add("-");
+			addSeparator(wMenu);
 			wMenu.add(whichWindow.saveRecipeMenuItem);
 
 
@@ -1073,7 +1079,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 			scriptingSubmenu.add(whichWindow.snapshotMenuItem); //��� scripting
 			scriptingSubmenu.add(whichWindow.sendScriptMenuItem);  //��� scripting
 			wMenu.add(scriptingSubmenu);
-			wMenu.add("-");
+			addSeparator(wMenu);
 			whichWindow.setPopTileMenuItemNames();
 			if (!whichWindow.isPoppedOut()) {
 				wMenu.add(whichWindow.popOutWindowMenuItem);
@@ -1085,7 +1091,6 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 					wMenu.add(whichWindow.popOutWindowMenuItem);
 			}
 
-			//wMenu.add("-", insertPoint);
 		}
 		return wMenu;
 	}
@@ -1106,7 +1111,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 				wMenu.add(whichWindow.cloneWindowMenuItem);
 			}
 			//experimental
-			wMenu.add("-");
+			addSeparator(wMenu);
 			wMenu.add(whichWindow.saveRecipeMenuItem);
 
 
@@ -1118,7 +1123,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 			scriptingSubmenu.add(whichWindow.snapshotMenuItem); //��� scripting
 			scriptingSubmenu.add(whichWindow.sendScriptMenuItem);  //��� scripting
 			wMenu.add(scriptingSubmenu);
-			wMenu.add("-");
+			addSeparator(wMenu);
 			whichWindow.setPopTileMenuItemNames();
 			if (!whichWindow.isPoppedOut()) {
 				wMenu.add(whichWindow.popOutWindowMenuItem);
@@ -1158,7 +1163,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 			}
 			 */
 			//experimental
-			wMenu.add("-");
+			addSeparator(wMenu);
 			/*
 			wMenu.add(whichWindow.saveRecipeMenuItem);
 
@@ -1174,7 +1179,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 			 */
 			//wMenu.add("-", insertPoint);
 		}
-		wMenu.add("-");
+		addSeparator(wMenu);
 		wMenu.add(new MesquiteMenuItem("Bring All Windows To Front", module, MesquiteTrunk.mesquiteTrunk.showAllCommand));
 		MesquiteSubmenu msm = new MesquiteSubmenu("Projects", wMenu, MesquiteModule.mesquiteTrunk);
 		wMenu.add(msm);
@@ -1478,7 +1483,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 						}
 						if (useOthers2) {
 							//make new mesquite menu item "others"
-							submenu.add(new JMenuItem("-"));
+							submenu.addSeparator();
 							MesquiteMenuItem othersItem =new MesquiteMenuItem("Other Choices...", null, mmi.command, "$ " + StringUtil.tokenize(mbi.getName()) + "  ");  
 							othersItem.setOthers(others2);
 							submenu.add(othersItem);
@@ -2142,7 +2147,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 					MesquiteSubmenu closeSubmenu=MesquiteSubmenu.getSubmenu("Close", newMenu, module);  //make submenu
 					newMenu.add(closeSubmenu);
 					closeSubmenu.add(new MesquiteMenuItem(projName, MesquiteModule.mesquiteTrunk, proj.getCloseFilesCommand()));
-					closeSubmenu.add("-");
+					closeSubmenu.addSeparator();
 					addFilesToSubmenu(closeSubmenu, proj, false,  proj.getCloseCommand());
 				}
 				else {
@@ -2174,7 +2179,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 					MesquiteMenuItem saveAllItem = new MesquiteMenuItem("All Files in " + projName, MesquiteModule.mesquiteTrunk, proj.getSaveFilesCommand());
 					saveSubmenu.add(saveAllItem);
 					saveAllItem.setShortcut(saveShortcut);	
-					saveSubmenu.add("-");
+					saveSubmenu.addSeparator();
 					addFilesToSubmenu(saveSubmenu, proj, true,  proj.getSaveCommand());
 					MesquiteSubmenu saveAsSubmenu=MesquiteSubmenu.getSubmenu("Save As", newMenu, module);  //make submenu
 					newMenu.add(saveAsSubmenu);
@@ -2211,7 +2216,7 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 
 			if (whichWindow!=null)
 				newMenu.add(new MesquiteMenuItem("Save Window as Text...", module, whichWindow.saveAsTextCommand));
-			newMenu.add("-");
+			newMenu.addSeparator();
 			/*-------------- Print item */
 
 			MesquiteMenuItem printItem = new MesquiteMenuItem(menuBar.getOwnerWindow().getPrintMenuItem(), MesquiteModule.mesquiteTrunk, menuBar.getOwnerWindow().printCommand);
@@ -2432,9 +2437,13 @@ public abstract class MenuOwner implements Doomable { //EMBEDDED: extends Applet
 		if (menu==null)
 			return null;
 		if (menu instanceof MesquitePopup) {
-			return ((MesquitePopup)menu).getItem(i).getText();
+			JMenuItem mItem= ((MesquitePopup)menu).getItem(i);
+			if (mItem!=null)
+				return  mItem.getText();
 		} else if (menu instanceof MesquiteMenu) {
-			return ((MesquiteMenu)menu).getItem(i).getText();
+			JMenuItem mItem= ((MesquiteMenu)menu).getItem(i);
+			if (mItem!=null)
+				return  mItem.getText();
 		}
 		return null;
 	}

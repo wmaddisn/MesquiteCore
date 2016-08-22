@@ -41,6 +41,7 @@ public class MesquiteCheckMenuItem extends JCheckBoxMenuItem implements Commanda
 	int hiddenStatus = InterfaceManager.NORMAL;
 	boolean hiddenStatusSet = false;
 	boolean hideable = true;
+	boolean itemStateChangedIsViaResetCheck=false;
 
 	//This is constructor used to make menu from specs
 	public MesquiteCheckMenuItem(MesquiteCMenuItemSpec specification) {
@@ -185,8 +186,14 @@ public class MesquiteCheckMenuItem extends JCheckBoxMenuItem implements Commanda
 		return itemID;
 	}
 	public void resetCheck() {
-		if (checkBoolean != null)
-			setState(checkBoolean.getValue());
+		if (checkBoolean != null){
+			if (getState()!=checkBoolean.getValue()) {
+				itemStateChangedIsViaResetCheck = true;
+				//Debugg.println("\nresetCheck  " + itemName + ": getState " + getState() + ", checkBoolean: " + checkBoolean.getValue() + ", specification.getBoolean: " + specification.getBoolean().getValue());
+				setState(checkBoolean.getValue());
+				itemStateChangedIsViaResetCheck = false;
+			}
+		}
 		else if (selected!=null) {
 			if (selected.getValue()== null)
 				setState(false);
@@ -254,7 +261,7 @@ public class MesquiteCheckMenuItem extends JCheckBoxMenuItem implements Commanda
 				}
 				resetCheck();
 			}
-			else {
+			else if (!itemStateChangedIsViaResetCheck) {
 				previousState = getState();
 				/*if ((e.modifiers & ActionEvent.ALT_MASK)!=0)
 				MesquiteWindow.respondToQueryMode("Menu item \"" + getLabel() + "\"", command, this);
