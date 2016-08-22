@@ -33,10 +33,10 @@ public class MRPopup extends MesquitePopup implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		//Event queue
 		/*return super.postEvent(evt);*/
-		if (e.getSource() instanceof JMenuItem) {   
-			JMenuItem menuItem = (JMenuItem)e.getSource();
-			if (menuItem!=null)
-				menuItem.remove(this);
+		if (e.getSource() instanceof MenuItem) {   
+			MenuContainer gp = getParent();
+//			if (gp !=null) 
+//					gp.remove(this);   DAVIDCHECK:  can't do this any more
 		}
 		/**/
 	}
